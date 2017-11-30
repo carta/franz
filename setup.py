@@ -1,12 +1,7 @@
-import os
 from setuptools import setup
 
 
-def read(fname):
-    return open(os.path.join(os.path.dirname(__file__), fname)).read()
-
-
-__version__ = "0.0.2"
+__version__ = "0.0.3"
 
 
 setup(
@@ -22,7 +17,7 @@ setup(
         "Event broker built on top of kafka and rabbitmq; used to handle micro"
         " services message exchange."
     ),
-    long_description=read('README.md'),
+    long_description=open('README.md').read(),
     license="MIT",
     keywords="microservices broker event kafka rabbitmq",
     install_requires=[

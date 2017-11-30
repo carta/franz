@@ -5,6 +5,7 @@ A lite wrapper around [Kafka](https://kafka.apache.org/) and [RabbitMQ](https://
 # Usage
 
 ## Installation
+- `pip install franz` (recommended)
 - `pip -e git+git@github.com:eshares/franz.git@master#egg=franz`
   - Change `@master` to a version or commit if required.
  

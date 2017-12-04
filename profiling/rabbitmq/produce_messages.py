@@ -30,7 +30,7 @@ if __name__ == '__main__':
 
     @timeit
     def make_messages():
-        with franz.RabbitProducer(parameters=params) as producer:
+        with franz.RabbitProducer('web', parameters=params) as producer:
             for _ in range(args.messages):
                 producer.send_message('test', message)
 

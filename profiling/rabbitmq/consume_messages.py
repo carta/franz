@@ -34,7 +34,7 @@ if __name__ == '__main__':
         )
 
         def callback(correlation_id, topic, body):
-            print('recvd message')
+            print('recvd message: {} {} {}'.format(correlation_id, topic, body))
 
             global count
             if args.messages == count:

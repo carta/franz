@@ -1,0 +1,5 @@
+-r requirements.txt
+Sphinx==1.6.5
+Faker==0.8.6
+pytest==3.2.1
+tox==2.9.1

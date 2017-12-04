@@ -78,3 +78,16 @@ for message in consumer:
 ```
 ./kafka-console-producer.sh --topic test --broker-list 0.0.0.0:9092
 ```
+
+# Testing
+```bash
+# setup versions
+pyenv install 3.5.3
+pyenv install 3.6.3
+pyenv virtualenv franz 3.5.3
+pyenv local franz 3.5.3 3.6.3
+pip install -r requirements-dev.txt
+
+# run tests (python 3.5 & 3.6)
+tox
+```

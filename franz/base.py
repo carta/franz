@@ -1,6 +1,6 @@
 import bson
 
-from franz import FranzEvent, InvalidMessage
+from franz import FranzEvent, InvalidMessage, SerializationError
 
 
 class BaseProducer:
@@ -27,7 +27,12 @@ class BaseProducer:
         -------
         bytes
         """
-        return bson.dumps(message.serialize())
+        try:
+            return bson.dumps(message.serialize())
+        except bson.UnknownSerializerError:
+            raise SerializationError(
+                "Unable to serialize message: {}.".format(message)
+            )
 
     @staticmethod
     def _check_message_is_valid_event(message):

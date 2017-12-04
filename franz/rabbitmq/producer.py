@@ -21,7 +21,7 @@ class Producer(base.BaseProducer):
 
     PERSISTENT_DELIVERY_MODE = 2
 
-    def __init__(self, parameters=None, app_name=None):
+    def __init__(self, app_name, parameters=None):
         self._parameters = parameters
         self._app_name = app_name
         self._connection = pika.BlockingConnection(self.parameters)
@@ -43,13 +43,13 @@ class Producer(base.BaseProducer):
     def get_properties(self, correlation_id=None):
         return pika.BasicProperties(
             delivery_mode=self.PERSISTENT_DELIVERY_MODE,
-            correlation_id=correlation_id or self.get_correlation_id(),
+            correlation_id=self.get_correlation_id(correlation_id),
         )
 
-    def get_correlation_id(self):
-        return '{uuid}{app_name}'.format(
-            uuid=str(uuid.uuid4()),
-            app_name='.{}'.format(self._app_name) if self._app_name else '',
+    def get_correlation_id(self, correlation_id=None):
+        return '{uuid}.{app_name}'.format(
+            uuid=correlation_id or str(uuid.uuid4()),
+            app_name=self._app_name,
         )
 
     def send_message(self, topic, message, correlation_id=None):

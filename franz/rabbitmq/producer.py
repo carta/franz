@@ -1,3 +1,5 @@
+import uuid
+
 import pika
 
 from franz import base
@@ -13,27 +15,18 @@ class Producer(base.BaseProducer):
     >>> from franz import RabbitProducer
     >>> from myapp.models import SomeModel
     >>> instance = SomeModel.objects.get(pk=1)
-    >>> with RabbitProducer(exchange='logs') as p:
+    >>> with RabbitProducer(app_name='web') as p:
     >>>     p.send_message('myapp.logs.critical', instance)
     """
 
     PERSISTENT_DELIVERY_MODE = 2
 
-    def __init__(self, parameters=None, exchange=''):
+    def __init__(self, parameters=None, app_name=None):
         self._parameters = parameters
-        self._exchange = exchange
+        self._app_name = app_name
         self._connection = pika.BlockingConnection(self.parameters)
 
         self._channel = self._connection.channel()
-        self._properties = pika.BasicProperties(
-            delivery_mode=self.PERSISTENT_DELIVERY_MODE,
-        )
-
-        self._channel.exchange_declare(
-            exchange=self._exchange,
-            exchange_type='topic',
-            durable=True,
-        )
 
     @property
     def parameters(self):
@@ -47,7 +40,23 @@ class Producer(base.BaseProducer):
     def __exit__(self, exc_type, exc_val, exc_tb):
         self._connection.close()
 
-    def _send_message_to_topic(self, topic, message):
+    def get_properties(self, correlation_id=None):
+        return pika.BasicProperties(
+            delivery_mode=self.PERSISTENT_DELIVERY_MODE,
+            correlation_id=correlation_id or self.get_correlation_id(),
+        )
+
+    def get_correlation_id(self):
+        return '{uuid}{app_name}'.format(
+            uuid=str(uuid.uuid4()),
+            app_name='.{}'.format(self._app_name) if self._app_name else '',
+        )
+
+    def send_message(self, topic, message, correlation_id=None):
+        self._check_message_is_valid_event(message)
+        self._send_message_to_topic(topic, message, correlation_id)
+
+    def _send_message_to_topic(self, topic, message, correlation_id=None):
         """
         Send a message to RabbitMQ based on the routing key (topic).
 
@@ -62,9 +71,19 @@ class Producer(base.BaseProducer):
         ------
         franz.InvalidMessage
         """
+        exchange = self.get_exchange_name(topic)
+        self._channel.exchange_declare(
+            exchange=exchange,
+            exchange_type='topic',
+            durable=True,
+        )
         self._channel.basic_publish(
-            self._exchange,
+            exchange,
             topic,
             self.serialize_message(message),
-            properties=self._properties,
+            properties=self.get_properties(correlation_id=correlation_id),
         )
+
+    @classmethod
+    def get_exchange_name(cls, topic):
+        return topic.split('.')[0]

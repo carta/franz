@@ -24,8 +24,6 @@ if __name__ == '__main__':
                             default=None)
         parser.add_argument('--vhost', '-v', metavar='P', type=str,
                             default='/')
-        parser.add_argument('--exchange', '-e', metavar='E', type=str,
-                            default='')
         args = parser.parse_args()
 
         params = franz.RabbitConnectionParameters(
@@ -35,7 +33,7 @@ if __name__ == '__main__':
             password=args.password,
         )
 
-        def callback(ch, method, properties, body):
+        def callback(correlation_id, topic, body):
             print('recvd message')
 
             global count
@@ -45,7 +43,6 @@ if __name__ == '__main__':
 
         with franz.RabbitConsumer(
             'test',
-            exchange=args.exchange,
             parameters=params,
             queue='slack',
         ) as c:

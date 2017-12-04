@@ -16,7 +16,6 @@ if __name__ == '__main__':
     parser.add_argument('--username', '-u', metavar='U', type=str, default=None)
     parser.add_argument('--password', '-p', metavar='P', type=str, default=None)
     parser.add_argument('--vhost', '-v', metavar='P', type=str, default='/')
-    parser.add_argument('--exchange', '-e', metavar='E', type=str, default='')
 
     args = parser.parse_args()
 
@@ -31,10 +30,7 @@ if __name__ == '__main__':
 
     @timeit
     def make_messages():
-        with franz.RabbitProducer(
-            parameters=params,
-            exchange=args.exchange
-        ) as producer:
+        with franz.RabbitProducer(parameters=params) as producer:
             for _ in range(args.messages):
                 producer.send_message('test', message)
 

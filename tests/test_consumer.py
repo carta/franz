@@ -2,7 +2,7 @@ import re
 from unittest import TestCase
 from kafka import KafkaConsumer
 
-from franz import Consumer
+from franz import KafkaConsumer as Consumer
 
 
 class TestConsumer(TestCase):

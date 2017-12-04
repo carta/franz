@@ -1,7 +1,6 @@
 from kafka import KafkaProducer
-from kafka.producer.future import FutureRecordMetadata
 
-from franz import FranzEvent, base
+from franz import base
 
 
 class Producer(base.BaseProducer):
@@ -64,5 +63,5 @@ class Producer(base.BaseProducer):
         """
         exception = message_result.exception
 
-        if exception:
+        if isinstance(exception, BaseException):
             raise exception

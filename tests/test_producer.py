@@ -1,20 +1,20 @@
 from unittest import TestCase
 from unittest.mock import patch
 
-from kafka import KafkaProducer
+from kafka import KafkaProducer as Producer
 
-from franz import Producer, FranzEvent, InvalidMessage, SerializationError
+from franz import KafkaProducer, FranzEvent, InvalidMessage, SerializationError
 
 
 class TestProducer(TestCase):
 
     def setUp(self):
         self.topic = 'test'
-        self.producer = Producer()
+        self.producer = KafkaProducer()
 
     def test_producer_creation(self):
         producer = self.producer.producer
-        self.assertIsInstance(producer, KafkaProducer)
+        self.assertIsInstance(producer, Producer)
 
     def test_send_message(self):
         class FranzBytes(FranzEvent, bytes):

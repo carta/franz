@@ -1,3 +1,5 @@
+import logging
+
 import bson
 import pika
 
@@ -88,6 +90,12 @@ class Consumer:
             correlation_id = '{}.{}'.format(
                 properties.correlation_id,
                 self._queue_name,
+            )
+            logging.basicConfig(
+                format='[%(levelname)s] {correlation_id}: %(message)s'.format(
+                    correlation_id=correlation_id
+                ),
+                level=logging.INFO,
             )
             consumer_callback(
                 correlation_id,

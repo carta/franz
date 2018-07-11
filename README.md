@@ -84,10 +84,11 @@ for message in consumer:
 # setup versions
 pyenv install 3.5.3
 pyenv install 3.6.3
+pyenv install 3.7.0
 pyenv virtualenv franz 3.5.3
-pyenv local franz 3.5.3 3.6.3
+pyenv local franz 3.5.3 3.6.3 3.7.0
 pip install -r requirements-dev.txt
 
-# run tests (python 3.5 & 3.6)
+# run tests (python 3.5, 3.6, 3.7)
 tox
 ```

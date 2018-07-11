@@ -17,11 +17,7 @@ jobs:
 
       - install_python_versions:
         command: |
-          pyenv install 3.5.3
-          pyenv install 3.6.3
-          pyenv install 3.7.0
-          pyenv virtualenv franz 3.5.3
-          pyenv local franz 3.5.3 3.6.3 3.7.0
+          pyenv install 3.5.3 && pyenv install 3.6.3 && pyenv install 3.7.0 && pyenv virtualenv franz 3.5.3 && pyenv local franz 3.5.3 3.6.3 3.7.0
 
       - run:
           name: install dependencies

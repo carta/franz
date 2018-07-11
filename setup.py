@@ -1,7 +1,7 @@
 from setuptools import setup
 
 
-__version__ = "0.0.10"
+__version__ = "0.0.11"
 
 
 setup(
@@ -21,9 +21,9 @@ setup(
     license="MIT",
     keywords="microservices broker event kafka rabbitmq",
     install_requires=[
-        "kafka-python==1.3.5",
-        "bson==0.5.0",
-        "pika==0.11.0",
+        "kafka-python==1.4.3",
+        "bson==0.5.6",
+        "pika==0.12.0",
     ],
     packages=[
         "franz",

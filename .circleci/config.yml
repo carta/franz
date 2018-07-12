@@ -27,7 +27,7 @@ shared: &shared
   - run:
       name: run tests
       command: |
-        pytest tests
+        python -m pytest tests
 
   - store_artifacts:
       path: test-reports

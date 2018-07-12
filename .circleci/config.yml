@@ -12,7 +12,7 @@ shared: &shared
   - run:
       name: install dependencies
       command: |
-        pip install -r requirements-dev.txt
+        pip install -r requirements-dev.txt --user
 
   - run:
       name: install franz

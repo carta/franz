@@ -17,7 +17,7 @@ shared: &shared
   - run:
       name: install franz
       command: |
-        pip install -e .
+        pip install -e . --user
 
   - save_cache:
       paths:

@@ -55,6 +55,11 @@ jobs:
       # use `-browsers` prefix for selenium tests, e.g. `3.6.1-browsers`
       - image: circleci/python:3.7.0
 
+  "testing":
+    <<: *shared
+    docker:
+      - image: erickmendonca/python-kafka-ci:lastest
+
 
 workflows:
   version: 2
@@ -63,3 +68,4 @@ workflows:
       - "python3.5"
       - "python3.6"
       - "python3.7"
+      - "testing"

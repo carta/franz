@@ -58,7 +58,7 @@ jobs:
   "testing":
     <<: *shared
     docker:
-      - image: erickmendonca/python-kafka-ci:lastest
+      - image: erickmendonca/python-kafka-ci:latest
 
 
 workflows:
